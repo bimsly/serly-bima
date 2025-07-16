@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serly ❤️ Bima</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    .info {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 20px;
+      text-align: center;
+      pointer-events: none;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="love"></canvas>
+  <div class="info">💖 Serly ❤️ Bima 💖</div>
+  <script>
+    const canvas = document.getElementById("love");
+    const ctx = canvas.getContext("2d");
+    let width, height;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const hearts = [];
+    function createHeart() {
+      const x = Math.random() * width;
+      const y = Math.random() * height;
+      const size = Math.random() * 4 + 2;
+      const speed = Math.random() * 1 + 0.5;
+      hearts.push({ x, y, size, speed });
+    }
+
+    function drawHeart(x, y, size) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(size, size);
+      ctx.beginPath();
+      ctx.moveTo(0, -1);
+      ctx.bezierCurveTo(1, -1, 1, 0.3, 0, 1);
+      ctx.bezierCurveTo(-1, 0.3, -1, -1, 0, -1);
+      ctx.fillStyle = "rgba(255, 100, 150, 0.8)";
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      for (let i = 0; i < hearts.length; i++) {
+        const h = hearts[i];
+        h.y -= h.speed;
+        drawHeart(h.x, h.y, h.size * 0.8);
+        if (h.y < -5) hearts.splice(i, 1);
+      }
+      if (Math.random() < 0.3) createHeart();
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
